@@ -1,0 +1,29 @@
+{
+  "Velocity": {
+    "Encoding":  "UTF-8",
+    "Loader": "file",
+    "Description": "Velocity File Resource Loader",
+    "FileLoaderClass": "org.apache.velocity.runtime.resource.loader.FileResourceLoader",
+    "FileLoaderPath": ".",
+    "FileLoaderCache": "false"
+  },
+  "Outcomes": [
+    {
+      "Name": "SampleDashboard",
+      "TemplateFile": "templates/dashboard01.vm",
+      "OutputFile": "output/dashboard01.json",
+      "DataSources": [
+        {
+          "Name": "common",
+          "Type": "MAP",
+          "SourceFile": "data/data01.dat"
+        },
+        {
+          "Name": "rows",
+          "Type": "CSV",
+          "SourceFile": "data/data02.dat"
+        }
+      ]
+    }
+  ]
+}

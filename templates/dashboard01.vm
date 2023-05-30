@@ -1,0 +1,84 @@
+{
+    "schemaVersion": null,
+    "dashboardFormatVersion": "4.0",
+    "name": "$common.get("DashboardName")",
+    "description": "$common.get("DashboardDescription")",
+    "properties": null,
+    "templateEntityType": "APPLICATION_COMPONENT_NODE",
+    "associatedEntityTemplates": null,
+    "minutesBeforeAnchorTime": -1,
+    "startDate": null,
+    "endDate": null,
+    "refreshInterval": 120000,
+    "backgroundColor": 15856629,
+    "color": 15856629,
+    "height": 768,
+    "width": 1024,
+    "canvasType": "CANVAS_TYPE_GRID",
+    "layoutType": "",
+    "widgetTemplates": [
+
+${rows.getClass().toString()}
+${rows[0].getClass().toString()}
+${rows[0].keySet()}
+${rows[0].keySet().contains("url")}
+
+#set ($iter = 0)
+#foreach ($row in $rows)
+        {
+            #set ($element = $row)
+
+            "widgetType": "TextWidget",
+            "title": null,
+            "height": 1,
+            "width": 4,
+            "minHeight": 0,
+            "minWidth": 0,
+            "x": 0,
+            "y": $iter,
+            "label": null,
+            "description": "${element.get("description")}",
+            "drillDownUrl": "${element.get("url")}",
+            "useMetricBrowserAsDrillDown": false,
+            "drillDownActionType": null,
+            "backgroundColor": 16777215,
+            "backgroundColors": null,
+            "backgroundColorsStr": "16777215,16777215",
+            "color": 1646891,
+            "fontSize": 30,
+            "useAutomaticFontSize": false,
+            "borderEnabled": false,
+            "borderThickness": 0,
+            "borderColor": 14408667,
+            "backgroundAlpha": 1,
+            "showValues": false,
+            "formatNumber": null,
+            "numDecimals": 0,
+            "removeZeros": null,
+            "compactMode": false,
+            "showTimeRange": false,
+            "renderIn3D": false,
+            "showLegend": null,
+            "legendPosition": null,
+            "legendColumnCount": null,
+            "startTime": null,
+            "endTime": null,
+            "minutesBeforeAnchorTime": 15,
+            "isGlobal": true,
+            "propertiesMap": null,
+            "dataSeriesTemplates": null,
+            "text": "$node.get("text")",
+            "textAlign": "CENTER",
+            "margin": 4
+        }
+    #set( $iter = $iter + 1 )    
+    #if( $iter < ${rows.size()} )
+    ,
+    #end  
+
+#end
+
+    ],
+    "warRoom": false,
+    "template": false
+}
