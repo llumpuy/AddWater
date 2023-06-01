@@ -29,12 +29,12 @@ public class AddWaterContextDataSource {
 
     // valMat supports a matrix of attributes -in columns- with value sets -in rows; they
     // can be accessed in templates as
-    // $sourceName[i].get(<property>)
+    // $sourceName[i][j]
 
     // Note: there is redundancy on this data structure, as (references to) hashmap keys
     // are replicated for each row. The decision favours usability in the template vs memory use
     // Time will tell if it is a reasonable tradeoff
-    private Vector<HashMap<String, String>> valMat;
+    private Vector<Vector<String>> valMat;
     //private ArrayList<HashMap<String, String>> valMat;
 
     public String getName() {
@@ -53,15 +53,15 @@ public class AddWaterContextDataSource {
             return new HashMap<String, String>();
         }
     }
-    public Vector<HashMap<String, String>> getTable() {
+    public Vector<Vector<String>> getTable() {
         if (type.equals("CSV")) {
             return valMat;
         } else{
-            return new Vector<HashMap<String, String>>();
+            return new Vector<Vector<String>>();
         }
     }
 
-    AddWaterContextDataSource (JSONObject jconfig) {
+    public AddWaterContextDataSource (JSONObject jconfig) {
 
         try {
             name = (String) jconfig.get("Name");
@@ -85,7 +85,7 @@ public class AddWaterContextDataSource {
         }
     }
 
-    HashMap<String, String> loadMap(String sourceFile) {
+    private HashMap<String, String> loadMap(String sourceFile) {
 
         HashMap<String, String> valMap = new HashMap<String, String>();
 
@@ -114,38 +114,31 @@ public class AddWaterContextDataSource {
         return valMap;
     }
 
-    Vector<HashMap<String, String>> loadArray(String sourceFile) {
+    private Vector<Vector<String>> loadArray(String sourceFile) {
 
-        Vector<HashMap<String, String>> mat = new Vector<HashMap<String, String>>();
+        Vector<Vector<String>> mat = new Vector<Vector<String>>();
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
 
-            // read header line and set hashmap
-            String headerLine;
-            String[] headers;
-
-            if ((headerLine = reader.readLine()) != null) {
-                headers = headerLine.split(COMMA_DELIMITER);
-
-            } else {
-                logger.error(String.format("Empty data source file %s", sourceFile));
-                return null;
-            }
-
             // populate hashmap with rows
-            String row;
+            String readRow;
             int rowNum = 0;
-            HashMap<String, String> element;
+            Vector<String> matRow;
+            int colSize = 0;
+            int refCols = 0;
 
-            while ((row = reader.readLine()) != null ) {
-                String[] values = row.split(COMMA_DELIMITER);
-                element = new HashMap<String, String>();
-
-                for (int i = 0; i < values.length; i++) {
-                    element.put(headers[i], values[i]);
+            while ((readRow = reader.readLine()) != null ) {
+                String[] values = readRow.split(COMMA_DELIMITER);
+                // skip empty or 'truncated' lines; use first row as reference
+                if (rowNum == 0) {
+                    refCols = values.length;
+                } else if (values.length != refCols) {
+                    continue;
                 }
-                mat.add(rowNum, element);
+                matRow = new Vector<String>(Arrays.asList(values));
+
+                mat.add(rowNum, matRow);
                 rowNum++;
             }
 
@@ -157,8 +150,7 @@ public class AddWaterContextDataSource {
         return mat;
     }
 
-    void addToContext(VelocityContext veloContext) {
-        HashMap<String, String> element = new HashMap<String, String>();
+    public void addToContext(VelocityContext veloContext) {
 
         switch (type) {
             case "MAP":
@@ -166,7 +158,6 @@ public class AddWaterContextDataSource {
                 break;
             case "CSV":
                 veloContext.put(name, valMat);
-                veloContext.put("element", element);
             default:
         }
     }

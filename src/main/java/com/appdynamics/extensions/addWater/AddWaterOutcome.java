@@ -66,6 +66,11 @@ public class AddWaterOutcome {
                 ds.addToContext(vc);
                 dataSources.add(ds);
             }
+
+            // as an utility context item, include the Integer class in the contezt; this allows for
+            // simple conversions & arithmentic
+            vc.put(Integer.class.getSimpleName(), Integer.class);
+
         } catch (Exception ex) {
             logger.error(String.format("Error parsing Outcome %s", name));
             logger.error(String.format("%s", ex.toString()));

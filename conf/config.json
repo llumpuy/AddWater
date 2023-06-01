@@ -24,6 +24,23 @@
           "SourceFile": "data/data02.dat"
         }
       ]
+    },
+    {
+      "Name": "InfraDashboard",
+      "TemplateFile": "templates/dashboard02.vm",
+      "OutputFile": "output/dashboard02.json",
+      "DataSources": [
+        {
+          "Name": "common",
+          "Type": "MAP",
+          "SourceFile": "data/infra_data01.dat"
+        },
+        {
+          "Name": "rows",
+          "Type": "CSV",
+          "SourceFile": "data/infra_data02.dat"
+        }
+      ]
     }
   ]
 }

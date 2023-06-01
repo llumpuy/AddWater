@@ -13,9 +13,9 @@ public class Main {
     //initialise logger
     private static final Logger logger = LogManager.getLogger(Main.class);
 
-    public static void main(@org.jetbrains.annotations.NotNull String[] args) {
+    public static void main(String[] args) {
 
-        logger.info(String.format("Process completed by %s", procStartTime));
+        logger.info(String.format("Process started by %s", procStartTime));
 
         String configFile = (args.length < 1 ? args[0] : "config.json");
 
