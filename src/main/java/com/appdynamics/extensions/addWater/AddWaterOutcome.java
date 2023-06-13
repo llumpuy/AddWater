@@ -30,7 +30,7 @@ public class AddWaterOutcome {
     private Template templ;
     private String templName;
 
-    private ArrayList<AddWaterContextDataSource> dataSources = new ArrayList<AddWaterContextDataSource>();
+    private ArrayList<AddWaterDataSource> dataSources = new ArrayList<AddWaterDataSource>();
 
     VelocityEngine getVelocityEngine() {
         return ve;
@@ -51,6 +51,7 @@ public class AddWaterOutcome {
     AddWaterOutcome(VelocityEngine veloE, JSONObject spec) {
         ve = veloE;
         vc = new VelocityContext();
+        AddWaterDataSourceFactory sourceFactory = new AddWaterDataSourceFactory();
 
         try {
             name = (String) spec.get("Name");
@@ -62,7 +63,8 @@ public class AddWaterOutcome {
             Iterator jai = jobArray.iterator();
             while (jai.hasNext()) {
                 JSONObject dspec = (JSONObject) jai.next();
-                AddWaterContextDataSource ds = new AddWaterContextDataSource(dspec);
+                AddWaterDataSource ds = sourceFactory.makeDataSource(dspec);
+                //AddWaterContextDataSource ds = new AddWaterContextDataSource(dspec);
                 ds.addToContext(vc);
                 dataSources.add(ds);
             }

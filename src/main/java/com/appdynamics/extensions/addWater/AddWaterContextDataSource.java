@@ -46,6 +46,7 @@ public class AddWaterContextDataSource {
     public String getSourceFile() {
         return sourceFile;
     }
+
     public HashMap<String, String> getMap() {
         if (type.equals("MAP")) {
             return valMap;
@@ -53,6 +54,7 @@ public class AddWaterContextDataSource {
             return new HashMap<String, String>();
         }
     }
+
     public Vector<Vector<String>> getTable() {
         if (type.equals("CSV")) {
             return valMat;
