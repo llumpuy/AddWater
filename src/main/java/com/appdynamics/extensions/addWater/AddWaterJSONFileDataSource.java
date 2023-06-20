@@ -8,20 +8,22 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
-public class AddWaterMapDataSource implements AddWaterDataSource {
+public class AddWaterJSONFileDataSource implements AddWaterDataSource{
 
     //initialise logger
-    private static final Logger logger = LogManager.getLogger(AddWaterMapDataSource.class);
+    private static final Logger logger = LogManager.getLogger(AddWaterDataSourceFactory.class);
 
     private String name;
     private String type;
     private String sourceFile;
 
-    private HashMap<String, String> valMap;
+    private JSONObject valJO;
+
+    @Override
+    public void setName(String sourceName) {
+        name = sourceName;
+    }
 
     @Override
     public String getName() {
@@ -29,8 +31,8 @@ public class AddWaterMapDataSource implements AddWaterDataSource {
     }
 
     @Override
-    public void setName (String sourceName) {
-        name = sourceName;
+    public void setType(String typeName) {
+        type = typeName;
     }
 
     @Override
@@ -39,8 +41,8 @@ public class AddWaterMapDataSource implements AddWaterDataSource {
     }
 
     @Override
-    public void setType(String sourceType) {
-        type = sourceType;
+    public void setSource(String sourceName) {
+        sourceFile = sourceName;
     }
 
     @Override
@@ -48,48 +50,35 @@ public class AddWaterMapDataSource implements AddWaterDataSource {
         return sourceFile;
     }
 
-    @Override
-    public void setSource(String resourceName) {
-        sourceFile = resourceName;
-    }
-
-    public AddWaterMapDataSource (JSONObject jconfig)  {
+    public AddWaterJSONFileDataSource(JSONObject jconfig)  {
 
         try {
             name = (String) jconfig.get("Name");
             type = (String) jconfig.get("Type");
             sourceFile = (String) jconfig.get("SourceFile");
 
-            if (!type.equals("MAP")) {
+            if (!type.equals("JSONFILE")) {
                 logger.error(String.format("Unexpected data source type for %s", name));
             }
 
-            valMap = loadMap(sourceFile);
+            valJO = loadJO(sourceFile);
 
         } catch (Exception e) {
-            logger.error(String.format("Error parsing data source file %s", sourceFile));
+            logger.error(String.format("Error parsing data source  %s", name));
             logger.error(e.toString());
         }
     }
 
-    private HashMap<String, String> loadMap(String sourceFile) {
+    private JSONObject loadJO(String sourceFile) {
 
-        HashMap<String, String> valMap = new HashMap<String, String>();
+        JSONObject jo = null;
 
         try {
             FileReader reader = new FileReader(sourceFile);
 
             JSONParser jsonParser = new JSONParser();
-            JSONObject mapData = (JSONObject) jsonParser.parse(reader);
-
-            Set<String> keys = mapData.keySet();
-            Iterator<String> keyIter = keys.iterator();
-            String iterValue;
-
-            while (keyIter.hasNext()) {
-                iterValue = (String) keyIter.next();
-                valMap.put(iterValue, (String) mapData.get(iterValue));
-            }
+            jo = (JSONObject) jsonParser.parse(reader);
+            return jo;
 
         } catch(ParseException jex) {
             logger.error(String.format("Error parsing JSON content in data source file %s", sourceFile));
@@ -98,12 +87,13 @@ public class AddWaterMapDataSource implements AddWaterDataSource {
             logger.error(String.format("Unknown error loading data source file %s", sourceFile));
             logger.error(e.toString());
         }
-        return valMap;
+        return new JSONObject();
+
     }
+
 
     @Override
     public void addToContext(VelocityContext veloContext) {
-        veloContext.put(name, valMap);
+        veloContext.put(name, valJO);
     }
-
 }

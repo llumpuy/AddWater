@@ -41,6 +41,51 @@
           "SourceFile": "data/infra_data02.dat"
         }
       ]
+    },
+    {
+      "Name": "PayloadDashboard",
+      "TemplateFile": "templates/dashboard03.vm",
+      "OutputFile": "output/dashboard03.json",
+      "DataSources": [
+        {
+          "Name": "JObject",
+          "Type": "JSONFILE",
+          "SourceFile": "data/data03.dat"
+        }
+      ]
+    },
+    {
+      "Name": "NodeDashboard",
+      "TemplateFile": "templates/dashboard02.vm",
+      "DataSources": [
+          {
+            "Name": "common",
+            "Type": "MAP",
+            "SourceFile": "data/infra_data01.dat"
+          },
+        {
+          "Name": "NodeList",
+          "Type": "REMOTEMAP",
+          "SocketTimeout": 3000,
+          "ConnectionTimeout": 3000,
+          "ProxyHost": "",
+          "ProxyPort": "",
+          "ProxyUserName": "",
+          "ProxyPassword": "",
+          "URL": "https://www.google.com",
+          "Method": "GET",
+          "PayloadFile": "",
+          "Headers": "",
+          "Auth": "NTLM",
+          "UserName": "mylogin",
+          "Password": "mypassword",
+          "KeyStoreType": "",
+          "KeyStorePath": "",
+          "KeyStorePassword": "",
+          "TrustStorePath": "",
+          "TrustStorePassword": ""
+        }
+      ]
     }
   ]
 }

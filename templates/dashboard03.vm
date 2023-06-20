@@ -1,0 +1,7 @@
+This is the class given to the JO
+$JObject.getClass().toString()
+
+This is the JO
+$JObject.get("id")
+$JObject.get("name")
+$JObject.get("enabled")

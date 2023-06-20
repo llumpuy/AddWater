@@ -28,21 +28,32 @@ public class AddWaterCSVDataSource implements AddWaterDataSource{
     // Time will tell if it is a reasonable tradeoff
     private Vector<Vector<String>> valMat;
 
+    @Override
     public String getName() {
         return name;
     }
+
+    @Override
     public void setName (String sourceName) {
         name = sourceName;
     }
+
+    @Override
     public String getType() {
         return type;
     }
+
+    @Override
     public void setType(String sourceType) {
         type = sourceType;
     }
+
+    @Override
     public String getSource() {
         return sourceFile;
     }
+
+    @Override
     public void setSource(String resourceName) {
         sourceFile = resourceName;
     }
@@ -102,6 +113,7 @@ public class AddWaterCSVDataSource implements AddWaterDataSource{
         return mat;
     }
 
+    @Override
     public void addToContext(VelocityContext veloContext) {
         veloContext.put(name, valMat);
     }

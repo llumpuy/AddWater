@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import java.io.FileWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 public class AddWaterOutcome {
@@ -65,13 +66,21 @@ public class AddWaterOutcome {
                 JSONObject dspec = (JSONObject) jai.next();
                 AddWaterDataSource ds = sourceFactory.makeDataSource(dspec);
                 //AddWaterContextDataSource ds = new AddWaterContextDataSource(dspec);
-                ds.addToContext(vc);
-                dataSources.add(ds);
+
+                //Temporary exclusion until data sources are completed
+                if (ds != null) {
+                    ds.addToContext(vc);
+                    dataSources.add(ds);
+                }
             }
 
-            // as an utility context item, include the Integer class in the contezt; this allows for
-            // simple conversions & arithmentic
+            // as utility context items, include classes in the contezt; this allows for
+            // simple conversions & arithmentic from their static methods
+
             vc.put(Integer.class.getSimpleName(), Integer.class);
+            vc.put(String.class.getSimpleName(), String.class);
+            vc.put(JSONObject.class.getSimpleName(), JSONObject.class);
+            vc.put(Date.class.getSimpleName(), Date.class);
 
         } catch (Exception ex) {
             logger.error(String.format("Error parsing Outcome %s", name));

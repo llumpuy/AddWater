@@ -23,6 +23,9 @@ public class AddWaterDataSourceFactory {
                     return new AddWaterMapDataSource(spec);
                 case "CSV":
                     return new AddWaterCSVDataSource(spec);
+                case "JSONFILE":
+                    return new AddWaterJSONFileDataSource(spec);
+                case "REMOTEMAP":
                 default:
                     return null;
             }
