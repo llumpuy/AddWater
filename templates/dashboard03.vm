@@ -5,3 +5,19 @@ This is the JO
 $JObject.get("id")
 $JObject.get("name")
 $JObject.get("enabled")
+
+
+Accessing Array
+
+This is the class given to the JO
+$JArray.getClass().toString()
+
+
+This is the class given to arr
+$JArray.getClass().toString()
+
+
+#foreach ( $item in $JArray )
+    $item.get("id")
+    $item.get("name")
+#end

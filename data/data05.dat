@@ -1,0 +1,44 @@
+<tiers>
+<tier>
+  <id>8</id>
+  <name>Address-Services</name>
+  <type>Application Server</type>
+  <agentType>APP_AGENT</agentType>
+  <numberOfNodes>1</numberOfNodes>
+</tier>
+<tier>
+  <id>16</id>
+  <name>Customer-Survey-Services</name>
+  <type>Application Server</type>
+  <agentType>APP_AGENT</agentType>
+  <numberOfNodes>1</numberOfNodes>
+</tier>
+<tier>
+  <id>9</id>
+  <name>ECommerce-Services</name>
+  <type>Application Server</type>
+  <agentType>APP_AGENT</agentType>
+  <numberOfNodes>2</numberOfNodes>
+</tier>
+<tier>
+  <id>12</id>
+  <name>Inventory-Services</name>
+  <type>Application Server</type>
+  <agentType>APP_AGENT</agentType>
+  <numberOfNodes>1</numberOfNodes>
+</tier>
+<tier>
+  <id>17</id>
+  <name>Order-Processing-Services</name>
+  <type>Application Server</type>
+  <agentType>APP_AGENT</agentType>
+  <numberOfNodes>1</numberOfNodes>
+</tier>
+<tier>
+  <id>18</id>
+  <name>Web-Tier-Services</name>
+  <type>Web Server</type>
+  <agentType>NATIVE_WEB_SERVER</agentType>
+  <numberOfNodes>1</numberOfNodes>
+</tier>
+</tiers>

@@ -1,0 +1,11 @@
+[{
+    "id": 1,
+    "name": "Machine Availability is too low",
+    "enabled": true
+},
+{
+    "id": 2,
+    "name": "CPU Use is too high",
+    "enabled": true
+}
+]

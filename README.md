@@ -1,4 +1,4 @@
-# AddWater V0.5
+# AddWater V0.75
 A tool to merge datafiles (maps, csvs) with a Velocity template
 
 AddWater uses Apache Velocity to merge VTL templates with data sources (as today: json files -to be contextualised in Velocity as HashMap<String,String>-, or csv files -contextualised as Vector<Vector\<String>>).

@@ -3,6 +3,7 @@ package com.appdynamics.extensions.addWater;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.velocity.VelocityContext;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,6 +20,7 @@ public class AddWaterJSONFileDataSource implements AddWaterDataSource{
     private String sourceFile;
 
     private JSONObject valJO;
+    private JSONArray valJOA;
 
     @Override
     public void setName(String sourceName) {
@@ -61,7 +63,7 @@ public class AddWaterJSONFileDataSource implements AddWaterDataSource{
                 logger.error(String.format("Unexpected data source type for %s", name));
             }
 
-            valJO = loadJO(sourceFile);
+            loadJO(sourceFile);
 
         } catch (Exception e) {
             logger.error(String.format("Error parsing data source  %s", name));
@@ -69,16 +71,23 @@ public class AddWaterJSONFileDataSource implements AddWaterDataSource{
         }
     }
 
-    private JSONObject loadJO(String sourceFile) {
+    private void loadJO(String sourceFile) {
 
-        JSONObject jo = null;
+        Object parResults = null;
 
         try {
             FileReader reader = new FileReader(sourceFile);
 
             JSONParser jsonParser = new JSONParser();
-            jo = (JSONObject) jsonParser.parse(reader);
-            return jo;
+
+            parResults =  jsonParser.parse(reader);
+            if (parResults instanceof JSONObject) {
+                valJO =  (JSONObject) parResults;
+            } else if (parResults instanceof JSONArray) {
+                valJOA = (JSONArray) parResults;
+            } else {
+                valJO = new JSONObject();
+            }
 
         } catch(ParseException jex) {
             logger.error(String.format("Error parsing JSON content in data source file %s", sourceFile));
@@ -87,13 +96,16 @@ public class AddWaterJSONFileDataSource implements AddWaterDataSource{
             logger.error(String.format("Unknown error loading data source file %s", sourceFile));
             logger.error(e.toString());
         }
-        return new JSONObject();
 
     }
 
 
     @Override
     public void addToContext(VelocityContext veloContext) {
-        veloContext.put(name, valJO);
+        if (valJO != null) {
+            veloContext.put(name, valJO);
+        } else {
+            veloContext.put(name, valJOA);
+        }
     }
 }

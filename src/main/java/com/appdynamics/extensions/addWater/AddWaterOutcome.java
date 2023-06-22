@@ -11,6 +11,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.w3c.dom.Document;
 
 import java.io.FileWriter;
 import java.io.StringWriter;
@@ -67,7 +68,7 @@ public class AddWaterOutcome {
                 AddWaterDataSource ds = sourceFactory.makeDataSource(dspec);
                 //AddWaterContextDataSource ds = new AddWaterContextDataSource(dspec);
 
-                //Temporary exclusion until data sources are completed
+                //Temporary exclusion until data source types V1.0 are completed
                 if (ds != null) {
                     ds.addToContext(vc);
                     dataSources.add(ds);
@@ -75,11 +76,10 @@ public class AddWaterOutcome {
             }
 
             // as utility context items, include classes in the contezt; this allows for
-            // simple conversions & arithmentic from their static methods
+            // simple conversions & arithmetic from their static methods
 
             vc.put(Integer.class.getSimpleName(), Integer.class);
             vc.put(String.class.getSimpleName(), String.class);
-            vc.put(JSONObject.class.getSimpleName(), JSONObject.class);
             vc.put(Date.class.getSimpleName(), Date.class);
 
         } catch (Exception ex) {
