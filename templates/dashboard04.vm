@@ -2,11 +2,11 @@ Sample use of context data from an XMLFILE data source
 
 This is the class given to the XML doc
 $XObject.getClass().toString()
-$XObject.fNodeName()
-$XObject.fNodeType()
-$$XObject.fNodeValue()
+$XObject.toString()
+$XObject.get("tiers").toString()
 
-This is the class given to the List Context element
-$XObject_list.getClass().toString()
-$XObject_list.item(0).fNodeName()
-$XObject_list.item(0).fNodeValue()
+
+#foreach ( $tier in $XObject.get("tiers").get("tier") )
+    $tier.toString()
+#end
+

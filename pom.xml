@@ -58,9 +58,14 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
+        <dependency>
             <groupId>com.appdynamics.extensions</groupId>
             <artifactId>url-monitoring-extension</artifactId>
-            <version>2.2.0</version>
+            <version>2.1.0</version>
         </dependency>
     </dependencies>
     <build>

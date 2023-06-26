@@ -4,16 +4,24 @@ import com.appdynamics.extensions.addWater.AddWaterDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.velocity.VelocityContext;
-import org.json.simple.JSONObject;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class AddWaterXMLFileDataSource implements AddWaterDataSource {
 
@@ -24,8 +32,9 @@ public class AddWaterXMLFileDataSource implements AddWaterDataSource {
     private String type;
     private String sourceFile;
 
-    private Document valDoc;
-    private NodeList valNodeList;
+    private org.w3c.dom.Document valDoc;
+    private org.w3c.dom.NodeList valNodeList;
+    private org.json.JSONObject valJO;
 
     @Override
     public void setName(String sourceName) {
@@ -80,24 +89,14 @@ public class AddWaterXMLFileDataSource implements AddWaterDataSource {
         DocumentBuilder builder;
 
         try {
-            // get the complete doc representation
-            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            valDoc = builder.parse(new File(fileName));
-            valDoc.getDocumentElement().normalize();
 
-            // but also a flat list of each element to -hopefully- facilitate
-            // manipulation within the template
-            valNodeList = valDoc.getElementsByTagName("*");
+            Path filePath = Paths.get(fileName);
 
+            byte[] bytes = Files.readAllBytes(filePath);
+            valJO = org.json.XML.toJSONObject(new String(bytes));
 
-        } catch (ParserConfigurationException e) {
-            logger.error(String.format("Error parsing data source  %s", name));
-            logger.error(e.toString());
         } catch (IOException e) {
             logger.error(String.format("Error accessing % for data source  %s", fileName, name));
-            logger.error(e.toString());
-        } catch (SAXException e) {
-            logger.error(String.format("Error parsing data source  %s", name));
             logger.error(e.toString());
         }
     }
@@ -108,7 +107,6 @@ public class AddWaterXMLFileDataSource implements AddWaterDataSource {
         // note: Velocity will associate to these classes:
         // class com.sun.org.apache.xerces.internal.dom.DeferredDocumentImpl
         // class com.sun.org.apache.xerces.internal.dom.DeepNodeListImpl
-        veloContext.put(name, valDoc);
-        veloContext.put(name + "_list", valNodeList);
+        veloContext.put(name, valJO);
     }
 }
